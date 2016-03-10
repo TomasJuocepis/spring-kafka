@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +47,7 @@ import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.kafka.test.rule.KafkaEmbedded;
+import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.test.annotation.DirtiesContext;
@@ -65,7 +65,7 @@ public class EnableKafkaIntegrationTests {
 
 	@ClassRule
 	public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, "annotated1", "annotated2", "annotated3",
-			                                                             "annotated4", "annotated5", "annotated6");
+			"annotated4", "annotated5", "annotated6");
 
 	@Autowired
 	public Listener listener;
@@ -158,16 +158,7 @@ public class EnableKafkaIntegrationTests {
 
 		@Bean
 		public Map<String, Object> consumerConfigs() {
-			Map<String, Object> props = new HashMap<>();
-			props.put("bootstrap.servers", embeddedKafka.getBrokersAsString());
-			//props.put("bootstrap.servers", "localhost:9092");
-			props.put("group.id", "testAnnot");
-			props.put("enable.auto.commit", true);
-			props.put("auto.commit.interval.ms", "100");
-			props.put("session.timeout.ms", "15000");
-			props.put("key.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
-			props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-			return props;
+			return KafkaTestUtils.consumerProps("testAnnot", "true", embeddedKafka);
 		}
 
 		@Bean
@@ -182,16 +173,7 @@ public class EnableKafkaIntegrationTests {
 
 		@Bean
 		public Map<String, Object> producerConfigs() {
-			Map<String, Object> props = new HashMap<>();
-			props.put("bootstrap.servers", embeddedKafka.getBrokersAsString());
-			//props.put("bootstrap.servers", "localhost:9092");
-			props.put("retries", 0);
-			props.put("batch.size", 16384);
-			props.put("linger.ms", 1);
-			props.put("buffer.memory", 33554432);
-			props.put("key.serializer", "org.apache.kafka.common.serialization.IntegerSerializer");
-			props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-			return props;
+			return KafkaTestUtils.producerProps(embeddedKafka);
 		}
 
 		@Bean
@@ -244,9 +226,9 @@ public class EnableKafkaIntegrationTests {
 		}
 
 		@KafkaListener(id = "fiz", topicPartitions =
-				                           {@TopicPartition(topic = "annotated5", partitions = {"0", "1"}),
-						                           @TopicPartition(topic = "annotated6", partitions = {"0", "1"})
-				                           })
+				{@TopicPartition(topic = "annotated5", partitions = {"0", "1"}),
+				 @TopicPartition(topic = "annotated6", partitions = {"0", "1"})
+				})
 		public void listen5(ConsumerRecord<?, ?> record) {
 			this.record = record;
 			this.latch5.countDown();
