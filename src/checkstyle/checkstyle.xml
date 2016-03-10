@@ -144,12 +144,12 @@
 		<module name="RedundantModifier" />
 
 		<!-- Regexp -->
-		<!--<module name="RegexpSinglelineJava">-->
-			<!--<property name="format" value="^\t* +\t*\S" />-->
-			<!--<property name="message"-->
-				<!--value="Line has leading space characters; indentation should be performed with tabs only." />-->
-			<!--<property name="ignoreComments" value="true" />-->
-		<!--</module>-->
+		<module name="RegexpSinglelineJava">
+			<property name="format" value="^\t* +\t*\S" />
+			<property name="message"
+				value="Line has leading space characters; indentation should be performed with tabs only." />
+			<property name="ignoreComments" value="true" />
+		</module>
 		<module name="RegexpSinglelineJava">
 			<property name="maximum" value="0"/>
 			<property name="format" value="org\.mockito\.Mockito\.(when|doThrow|doAnswer)" />
