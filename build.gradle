@@ -76,6 +76,7 @@ subprojects { subproject ->
 	//	metricsVersion = '2.2.0'
 		scalaVersion = '2.11'
 		reactor2Version = '2.0.6.RELEASE'
+		springBootVersion = '1.3.3.RELEASE'
 		springRetryVersion = '1.1.2.RELEASE'
 		springVersion = '4.2.5.RELEASE'
 
@@ -139,10 +140,6 @@ project ('spring-kafka') {
 
 	dependencies {
 		compile "org.springframework:spring-messaging:$springVersion"
-//		compile ("org.apache.avro:avro:$avroVersion", optional)
-//		compile ("org.apache.avro:avro-compiler:$avroVersion", optional)
-//		compile "com.goldmansachs:gs-collections:$gsCollectionsVersion"
-//		compile "io.projectreactor:reactor-core:$reactor2Version"
 
 		compile "org.apache.kafka:kafka-clients:$kafkaVersion"
 
@@ -171,6 +168,17 @@ project ('spring-kafka-test') {
 		}
 		compile ("org.hamcrest:hamcrest-all:$hamcrestVersion", optional)
 		compile ("org.assertj:assertj-core:$assertjVersion", optional)
+	}
+}
+
+project ('spring-kafka-boot') {
+	description = 'Spring Kafka Boot Support'
+
+	dependencies {
+		compile project(':spring-kafka')
+		compile "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
+
+		testCompile project(':spring-kafka-test')
 	}
 }
 
