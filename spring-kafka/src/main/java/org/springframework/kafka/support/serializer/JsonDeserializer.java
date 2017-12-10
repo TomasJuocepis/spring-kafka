@@ -46,6 +46,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
  * @author Igor Stepanov
  * @author Artem Bilan
  * @author Gary Russell
+ * @author Yanming Zhou
  */
 public class JsonDeserializer<T> implements ExtendedDeserializer<T> {
 
@@ -93,10 +94,8 @@ public class JsonDeserializer<T> implements ExtendedDeserializer<T> {
 		if (targetType == null) {
 			targetType = (Class<T>) ResolvableType.forClass(getClass()).getSuperType().resolveGeneric(0);
 		}
-		if (targetType != null) {
-			this.addTrustedPackages(targetType.getPackage().getName());
-		}
 		this.targetType = targetType;
+		addTargetPackageToTrusted();
 	}
 
 	public Jackson2JavaTypeMapper getTypeMapper() {
@@ -138,6 +137,7 @@ public class JsonDeserializer<T> implements ExtendedDeserializer<T> {
 				else {
 					throw new IllegalStateException(DEFAULT_VALUE_TYPE + " must be Class or String");
 				}
+				addTargetPackageToTrusted();
 			}
 		}
 		catch (ClassNotFoundException | LinkageError e) {
@@ -158,6 +158,12 @@ public class JsonDeserializer<T> implements ExtendedDeserializer<T> {
 	 */
 	public void addTrustedPackages(String... packages) {
 		this.typeMapper.addTrustedPackages(packages);
+	}
+
+	private void addTargetPackageToTrusted() {
+		if (this.targetType != null) {
+			addTrustedPackages(this.targetType.getPackage().getName());
+		}
 	}
 
 	@Override

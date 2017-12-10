@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2016-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.Before;
 import org.junit.Test;
+
 import org.springframework.kafka.support.converter.AbstractJavaTypeMapper;
 import org.springframework.kafka.support.serializer.testentities.DummyEntity;
 
@@ -38,6 +39,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 /**
  * @author Igor Stepanov
  * @author Artem Bilan
+ * @author Yanming Zhou
  */
 public class JsonSerializationTests {
 
@@ -146,7 +148,7 @@ public class JsonSerializationTests {
 	}
 
 	static class DummyEntityJsonDeserializer extends JsonDeserializer<DummyEntity> {
-	
+
 	}
 
 }
