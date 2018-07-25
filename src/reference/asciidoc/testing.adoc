@@ -31,7 +31,8 @@ public static Map<String, Object> consumerProps(String group, String autoCommit,
 public static Map<String, Object> senderProps(EmbeddedKafkaBroker embeddedKafka) { ... }
 ----
 
-A JUnit `@Rule` wrapper for the `EmbeddedKafkaBroker` is provided that creates an embedded Kafka and an embedded Zookeeper server.
+A JUnit 4 `@Rule` wrapper for the `EmbeddedKafkaBroker` is provided that creates an embedded Kafka and an embedded Zookeeper server.
+(See <<embedded-kafka-annotation>> about using `@EmbeddedKafka` with JUnit 5).
 
 [source, java]
 ----
@@ -150,6 +151,7 @@ IMPORTANT: This example provides no mechanism for shutting down the broker(s) wh
 This could be a problem if, say, you run your tests in a Gradle daemon.
 You should not use this technique in such a situation, or use something to call `destroy()` on the `EmbeddedKafkaBroker` when your tests are complete.
 
+[[embedded-kafka-annotation]]
 ==== @EmbeddedKafka Annotation
 It is generally recommended to use the rule as a `@ClassRule` to avoid starting/stopping the broker between tests (and use a different topic for each test).
 Starting with _version 2.0_, if you are using Spring's test application context caching, you can also declare a `EmbeddedKafkaBroker` bean, so a single broker can be used across multiple test classes.
@@ -213,6 +215,8 @@ In the example above, the property placeholders `${kafka.topics.another-topic}`,
 In addition the broker properties are loaded from the `broker.properties` classpath resource specified by the `brokerPropertiesLocation`.
 Property placeholders are resolved for the `brokerPropertiesLocation` URL and for any property placeholders found in the resource.
 Properties defined by `brokerProperties` override properties found in `brokerPropertiesLocation`.
+
+The `@EmbeddedKafka` annotation can be used with JUnit 4 or JUnit 5.
 
 ==== Hamcrest Matchers
 

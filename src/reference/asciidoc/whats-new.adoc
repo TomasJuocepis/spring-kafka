@@ -44,7 +44,7 @@ See <<headers>> for more information.
 ==== Embedded Kafka Changes
 
 The `KafkaEmbedded` class and its `KafkaRule` interface have need deprecated in favor of the `EmbeddedKafkaBroker` and its JUnit 4 `EmbeddedKafkaRule` wrapper.
-The `@EmbeddedKafka` now populates an `EmbeddedKafkaBroker` bean instead of deprecated `KafkaEmbedded`.
-Such a responsibility distribution allows to use an `@EmbeddedKafka` in the JUnit 5 tests.
+The `@EmbeddedKafka` annotation now populates an `EmbeddedKafkaBroker` bean instead of the deprecated `KafkaEmbedded`.
+This allows the use of `@EmbeddedKafka` in JUnit 5 tests.
 
 See <<testing>> for more information.
